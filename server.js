@@ -2,21 +2,15 @@ const connection = require("./config/connection");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 const chalk = require("chalk");
-const figlet = require("figlet");
 const validate = require("./javascript/validate");
 
 // Database Connect and Starter Title
 connection.connect((error) => {
   if (error) throw error;
-  console.log(
-    chalk.yellow.bold(
-      `====================================================================================`
-    )
-  );
 
   console.log(``);
   console.log(
-    chalk.yellow.bold(
+    chalk.green.bold(
       `====================================================================================`
     )
   );
@@ -129,7 +123,7 @@ const viewAllEmployees = async () => {
     const [rows] = await connection.promise().query(sql);
 
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -137,13 +131,13 @@ const viewAllEmployees = async () => {
       `                              ` + chalk.green.bold(`Current Employees:`)
     );
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
     console.table(rows);
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -157,7 +151,7 @@ const viewAllEmployees = async () => {
 const viewAllRoles = async () => {
   try {
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -166,7 +160,7 @@ const viewAllRoles = async () => {
         chalk.green.bold(`Current Employee Roles:`)
     );
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -180,7 +174,7 @@ const viewAllRoles = async () => {
     });
 
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -197,7 +191,7 @@ const viewAllDepartments = async () => {
     const [rows] = await connection.promise().query(sql);
 
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -205,13 +199,13 @@ const viewAllDepartments = async () => {
       `                              ` + chalk.green.bold(`All Departments:`)
     );
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
     console.table(rows);
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -233,7 +227,7 @@ const viewEmployeesByDepartment = async () => {
     const [rows] = await connection.promise().query(sql);
 
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -242,13 +236,13 @@ const viewEmployeesByDepartment = async () => {
         chalk.green.bold(`Employees by Department:`)
     );
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
     console.table(rows);
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -262,7 +256,7 @@ const viewEmployeesByDepartment = async () => {
 const viewDepartmentBudget = async () => {
   try {
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -271,7 +265,7 @@ const viewDepartmentBudget = async () => {
         chalk.green.bold(`Budget By Department:`)
     );
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -284,7 +278,7 @@ const viewDepartmentBudget = async () => {
 
     console.table(rows);
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
@@ -443,13 +437,13 @@ const addRoleResume = async (departmentData) => {
     await connection.promise().query(sql, crit);
 
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
     console.log(chalk.greenBright(`Role successfully created!`));
     console.log(
-      chalk.yellow.bold(
+      chalk.green.bold(
         `====================================================================================`
       )
     );
