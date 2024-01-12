@@ -5,7 +5,10 @@ const chalk = require("chalk");
 const validate = require("./javascript/validate");
 
 // Database Connect and Starter Title
+
+// .connect() is part of the mysql2 library and is used to establish a connection to the MySQL database.
 connection.connect((error) => {
+  // a concise way of writing an error-checking statement in JavaScript. It's an "if" statement in a single line, commonly used for quick error handling.
   if (error) throw error;
 
   console.log(``);
@@ -14,11 +17,14 @@ connection.connect((error) => {
       `====================================================================================`
     )
   );
+  // Prompt the user for input after a successful connection
   promptUser();
 });
 
 // Prompt User for Choices
+// .prompt() is a method provided by the inquirer library
 const promptUser = () => {
+  // The inquirer.prompt() function returns a Promise. Once the user completes the prompts, the Promise is resolved, and the provided .then() callback is executed with the user's answers as the parameter (in this case, it's named answers).
   inquirer
     .prompt([
       {
@@ -43,8 +49,11 @@ const promptUser = () => {
         ],
       },
     ])
+    // Reminder: .then() is a method used in Promises in JavaScript. It allows you to specify a callback function that will be executed when the Promise is resolved, i.e., when the asynchronous operation is successful.
+    // Context: In the context of inquirer.prompt(), it is used to handle the user's input after they've answered the prompts.
     .then((answers) => {
-      const { choices } = answers;
+      // a constant variable named choices and assigns it the value of the choices property from the answers
+      const choices = answers.choices;
 
       if (choices === "View All Employees") {
         viewAllEmployees();
@@ -120,6 +129,12 @@ const viewAllEmployees = async () => {
                   AND role.id = employee.role_id
                   ORDER BY employee.id ASC`;
 
+    //connection -> MySQL database connection object
+    // .promise() part of the MySQL2 library
+    // connection.promise().query(sql): This is calling the query method on a promise-based version of the MySQL connection (connection.promise()). The query method is used to execute a SQL query on the database.
+    // await : The await keyword is used to pause the execution of the asynchronous function until the promise returned by connection.promise().query(sql) is resolved.
+    //Destructuring assignment: unpack values from arrays, or properties from objects, into distinct variables.
+    // let [a, b] = [4,5]
     const [rows] = await connection.promise().query(sql);
 
     console.log(
@@ -164,6 +179,7 @@ const viewAllRoles = async () => {
         `====================================================================================`
       )
     );
+    // INNER JOIN is used to combine rows from the role table and the department table based on the specified condition. In this case, the condition is specified in the ON clause
     const sql = `SELECT role.id, role.title, department.department_name AS department
                   FROM role
                   INNER JOIN department ON role.department_id = department.id`;
@@ -217,6 +233,7 @@ const viewAllDepartments = async () => {
 
 // View all Employees by Department
 const viewEmployeesByDepartment = async () => {
+  // LEFT JOIN is used to include all rows from the left table (employee in this case) and the matching rows from the right tables (role and department). If there is no match in the right tables, the result will still include the row from the left table, and the columns from the right tables will be filled with NULL values.
   try {
     const sql = `SELECT employee.first_name, 
                     employee.last_name, 
@@ -269,6 +286,7 @@ const viewDepartmentBudget = async () => {
         `====================================================================================`
       )
     );
+    //the INNER JOIN is used to combine rows from the role table and the department table where there is a match based on the specified condition.
     const sql = `SELECT department_id AS id, 
                     department.department_name AS department,
                     SUM(salary) AS budget
@@ -325,11 +343,17 @@ const addEmployee = async () => {
     const roleData = await connection
       .promise()
       .query("SELECT role.id, role.title FROM role");
+
+    //roleData[0] accessing the result of the database query. In this case, it's assumed that the query returns an array, and [0] is used to access the first element of that array.
+    // map function being called on the array obtained from the query result.
+    // so what is a map?
+    // The Array.map() method allows you to iterate over an array and modify its elements using a callback function.
     const roles = roleData[0].map(({ id, title }) => ({
       name: title,
       value: id,
     }));
 
+    // the roles below is coming from the mapped data above
     const roleChoice = await inquirer.prompt([
       {
         type: "list",
@@ -378,9 +402,12 @@ const addEmployee = async () => {
 // Add a New Role
 const addRole = async () => {
   try {
+    // const [response]: uses destructuring assignment to extract the first element of the array returned by the resolved Promise. In this case, the result of the query is an array, and [response] is extracting the first element (the first and only element in this case) and assigning it to the variable response.
     const [response] = await connection
       .promise()
       .query("SELECT * FROM department");
+
+    //  create a new array (deptNamesArray) by extracting the values of the department_name property from each object in the response array. This array, deptNamesArray, will contain only the department names, creating a simplified representation of the original data from the "department" table.
     let deptNamesArray = response.map(
       (department) => department.department_name
     );
@@ -425,15 +452,22 @@ const addRoleResume = async (departmentData) => {
     let createdRole = answer.newRole;
     let departmentId;
 
+    // Iterate over each element in departmentData array
     departmentData.forEach((department) => {
+      // Check if the current departmentData element's departmentName matches department.department_name
       if (departmentData.departmentName === department.department_name) {
+        // If there's a match, assign the department's id to the variable departmentId
         departmentId = department.id;
       }
     });
 
+    // Define an SQL query string for inserting a new role into the "role" table
     const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+
+    // Create an array crit containing values to be inserted into the SQL query
     const crit = [createdRole, answer.salary, departmentId];
 
+    // Execute the SQL query asynchronously using the connection, passing the crit array as parameters
     await connection.promise().query(sql, crit);
 
     console.log(
@@ -492,13 +526,18 @@ const updateEmployeeRole = async () => {
       WHERE department.id = role.department_id AND role.id = employee.role_id`
     );
 
+    // Create an array employeeNamesArray by mapping over each element in employeeResponse
+    // map in this context is to transform the array of employee objects (employeeResponse) into an array of strings, specifically, an array of full names
     let employeeNamesArray = employeeResponse.map(
       (employee) => `${employee.first_name} ${employee.last_name}`
     );
 
+    // Execute a SQL query to select role information and assign the result to roleResponse
     const [roleResponse] = await connection
       .promise()
       .query(`SELECT role.id, role.title FROM role`);
+
+    // Create an array rolesArray by mapping over each element in roleResponse
     let rolesArray = roleResponse.map((role) => role.title);
 
     const answer = await inquirer.prompt([
@@ -532,7 +571,11 @@ const updateEmployeeRole = async () => {
       }
     });
 
+    // Define an SQL query string for updating the role_id of an employee
     const sql = `UPDATE employee SET employee.role_id = ? WHERE employee.id = ?`;
+    // newTitleId would replace the first question mark (?) as the value for updating the role_id, and employeeId would replace the second question mark (?) as the condition for identifying the specific employee whose role_id is being updated.
+
+    // Execute the SQL query asynchronously using the connection, passing [newTitleId, employeeId] as parameters
     await connection.promise().query(sql, [newTitleId, employeeId]);
 
     console.log(
@@ -663,6 +706,7 @@ const removeEmployee = async () => {
     });
 
     const sql = `DELETE FROM employee WHERE employee.id = ?`;
+    // only one parameter (employeeId), you still need to pass it as an array because the query method expects an array of values to replace placeholders in the SQL query.
     await connection.promise().query(sql, [employeeId]);
 
     console.log(
@@ -685,6 +729,7 @@ const removeEmployee = async () => {
 // Delete a Role
 const removeRole = async () => {
   try {
+    // Using [response] in the destructuring assignment extracts the first element of the array and assigns it to the variable response. This syntax is a concise way of accessing the result directly without having to reference it as result[0] later in the code.
     const [response] = await connection
       .promise()
       .query(`SELECT role.id, role.title FROM role`);
