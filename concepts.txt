@@ -1,13 +1,165 @@
-module
-importing a module ()
-Arrow function
-throw keyword
-Promise
-.then()
-async await
-try catch()
-Destructuring assignment
-forEach()
-map function
-Array.map()
-Template literal
+1.  Module / Importing a module (): 
+   Modules in JavaScript help organize code by allowing you to split it into smaller files. The `import` statement is used to bring functionality from one module into another.
+    Module / Importing a module (): 
+   // mathModule.js
+   export const add = (a, b) => a + b;
+
+   // main.js
+   import { add } from './mathModule';
+   console.log(add(2, 3)); // Outputs: 5
+
+
+2.  Arrow Function: 
+   Arrow functions in JavaScript provide a concise syntax for writing function expressions. They have a shorter syntax and lexical scoping, making them particularly useful for functions with simple, one-line expressions.
+  // Arrow Function: 
+   // Traditional Function
+   function multiply(a, b) {
+     return a * b;
+   }
+
+   // Arrow Function
+   const multiplyArrow = (a, b) => a * b;
+
+   console.log(multiply(2, 4)); // Outputs: 8
+   console.log(multiplyArrow(2, 4)); // Outputs: 8
+   
+
+
+3.  throw keyword: 
+   The `throw` keyword in JavaScript is used to manually generate an exception or error. It is often used within conditional statements to handle unexpected situations.
+
+ // throw keyword: 
+   function divide(a, b) {
+     if (b === 0) {
+       throw new Error("Cannot divide by zero");
+     }
+     return a / b;
+   }
+
+   try {
+     console.log(divide(6, 2)); // Outputs: 3
+     console.log(divide(6, 0)); // Throws an error
+   } catch (error) {
+     console.error(error.message); // Outputs: Cannot divide by zero
+   }
+
+4.  Promise: 
+   Promises are a way to handle asynchronous operations in JavaScript. They represent a value that might be available now, or in the future, or never, resolving or rejecting with a value or reason accordingly.
+
+   
+// Promise: 
+   const promiseExample = new Promise((resolve, reject) => {
+     const success = true;
+
+     if (success) {
+       resolve("Promise resolved successfully");
+     } else {
+       reject("Promise rejected");
+     }
+   });
+
+   promiseExample
+     .then((result) => console.log(result))
+     .catch((error) => console.error(error));
+    
+
+
+5.  .then(): 
+   The `.then()` method is used with Promises in JavaScript to handle the resolution of a Promise. It allows you to specify what to do once the Promise is successfully resolved.
+
+   
+//  .then(): 
+   function fetchData() {
+     return new Promise((resolve) => {
+       setTimeout(() => resolve("Data fetched!"), 2000);
+     });
+   }
+
+   fetchData().then((data) => console.log(data)); // Outputs: Data fetched!
+    
+
+6.  async/await: 
+   `async` and `await` are keywords used to simplify working with Promises. `async` is used to define an asynchronous function, and `await` is used to pause the execution of the function until the Promise is resolved.
+
+   //  async/await: 
+   async function fetchDataAsync() {
+     return new Promise((resolve) => {
+       setTimeout(() => resolve("Async Data fetched!"), 2000);
+     });
+   }
+
+   async function getData() {
+     const data = await fetchDataAsync();
+     console.log(data); // Outputs: Async Data fetched!
+   }
+
+   getData();
+    
+
+7.  try catch(): 
+   `try` and `catch` are keywords used for error handling in JavaScript. Code within the `try` block is executed, and if an exception occurs, it is caught and handled in the `catch` block.
+
+   
+// try catch(): 
+   function divideSafely(a, b) {
+     try {
+       if (b === 0) {
+         throw new Error("Cannot divide by zero");
+       }
+       return a / b;
+     } catch (error) {
+       console.error(error.message);
+       return -1;
+     }
+   }
+
+   console.log(divideSafely(6, 2)); // Outputs: 3
+   console.log(divideSafely(6, 0)); // Outputs: Cannot divide by zero
+
+8.  Destructuring Assignment: 
+   Destructuring assignment allows you to extract values from arrays or objects and assign them to variables in a concise manner, enhancing code readability and brevity.
+   
+//  Destructuring Assignment: 
+   // Object Destructuring
+   const person = { name: "John", age: 30 };
+   const { name, age } = person;
+   console.log(name, age); // Outputs: John 30
+
+   // Array Destructuring
+   const numbers = [1, 2, 3];
+   const [first, second, third] = numbers;
+   console.log(first, second, third); // Outputs: 1 2 3
+
+9.  forEach(): 
+   The `forEach()` method is used to iterate over elements in an array. It executes a provided function once for each array element, providing a cleaner alternative to traditional for loops.
+
+       
+ // forEach(): 
+   const numbers = [1, 2, 3];
+   numbers.forEach((num) => console.log(num * 2)); // Outputs: 2 4 6
+    
+
+10.  map function: 
+    The `map()` function in JavaScript creates a new array by applying a provided function to each element of the original array. It is commonly used for transforming data and maintaining immutability.
+
+    
+//  map function: 
+    const numbers = [1, 2, 3];
+    const doubledNumbers = numbers.map((num) => num * 2);
+    console.log(doubledNumbers); // Outputs: [2, 4, 6]
+
+11.  Array.map(): 
+    `Array.map()` is the same as the `map()` function, but applied directly to arrays. It's a method of the Array object and is often used for concise and expressive transformations of array elements.
+    
+// Array.map(): 
+    const numbers = [1, 2, 3];
+    const squaredNumbers = numbers.map((num) => num   2);
+    console.log(squaredNumbers); // Outputs: [1, 4, 9]
+
+12.  Template Literal: 
+    Template literals are a way to embed expressions into string literals in JavaScript. They are enclosed by backticks (`) and allow for easy interpolation of variables and multi-line strings.
+//Template Literal: 
+    const name = "Alice";
+    const greeting = `Hello, ${name}!`;
+    console.log(greeting); // Outputs: Hello, Alice!
+     
